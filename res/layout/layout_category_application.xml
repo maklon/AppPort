@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#efefef"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:background="#2c2e2f"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/text_detail_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="热门"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/text_detail_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="最新"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/itemlist_appname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="上升"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="80dp"
+            android:layout_height="fill_parent"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:id="@+id/RadioButton04"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="影音·视频" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton03"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="输入·浏览" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton02"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="系统·工具" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton01"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="社交·聊天" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="新闻·天气" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton10"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="生活·优惠" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton09"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="购物·支付" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton08"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="拍摄·美化" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton07"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="壁纸·主题" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton06"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="交通·旅行" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton05"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="书籍·阅读" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton17"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="金融·理财" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton16"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="办公·效率" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton15"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="学习·幼教" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton14"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="健康·医疗" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton13"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="体育·竞技" />
+
+                    <RadioButton
+                        android:id="@+id/RadioButton12"
+                        style="@style/main_category_item_rb"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/category_item_bg"
+                        android:text="趣味·其他" />
+                </RadioGroup>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/appListView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#efefef"
+                android:cacheColorHint="#efefef"
+                android:divider="@drawable/division"
+                android:dividerHeight="2dp"
+                android:visibility="gone" >
+
+            </ListView>
+
+            <include
+                android:id="@+id/loading_indicator"
+                layout="@layout/loading_indicator"
+                android:visibility="visible" />
+
+            <include
+                android:id="@+id/loading_exception"
+                layout="@layout/loading_exception"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/loading_append"
+                layout="@layout/loading_append"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

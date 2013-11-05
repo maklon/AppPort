@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#f1f1f1"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" />
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RadioGroup
+            android:id="@+id/toolbarTab"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/tabHome"
+                style="@style/main_tab_rb"
+                android:drawableTop="@drawable/ico_home"
+                android:text="首页" />
+
+            <RadioButton
+                android:id="@+id/tabCategory"
+                style="@style/main_tab_rb"
+                android:drawableTop="@drawable/ico_category"
+                android:text="分类" />
+
+            <RadioButton
+                android:id="@+id/tabSearch"
+                style="@style/main_tab_rb"
+                android:drawableTop="@drawable/ico_search"
+                android:text="搜索" />
+
+            <RadioButton
+                android:id="@+id/tabSpecial"
+                style="@style/main_tab_rb"
+                android:drawableTop="@drawable/ico_special"
+                android:text="专区" />
+
+            <RadioButton
+                android:id="@+id/tabSet"
+                style="@style/main_tab_rb"
+                android:drawableTop="@drawable/ico_set"
+                android:text="管理" />
+        </RadioGroup>
+    </LinearLayout>
+
+</TabHost>
