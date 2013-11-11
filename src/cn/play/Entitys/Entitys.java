@@ -31,6 +31,15 @@ public class Entitys {
 		public int CompleteSize;
 		public int Status;
 
+		public DownloadInfo(){
+			this.Id = 0;
+			this.Url = "";
+			this.FileName = "";
+			this.FileSize = 0;
+			this.CompleteSize = 0;
+			this.Status = 0;
+		}
+		
 		public DownloadInfo(String url, String fileName) {
 			this.Id = 0;
 			this.Url = url;

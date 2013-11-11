@@ -28,11 +28,18 @@ public class DownloadManager {
 	}
 
 	public int GetDownloadInfo(String Url) {
-		Cursor r = Db.rawQuery("SELECT id FROM DownloadList WHERE url=?",
+		Cursor r = Db.rawQuery("SELECT * FROM DownloadList WHERE url=?",
 				new String[] { Url });
 		if (r.getCount() == 0)
 			return 0;
 		r.moveToFirst();
+		DownloadInfo info = new DownloadInfo();
+		info.Id = r.getInt(0);
+		info.Url = r.getString(1);
+		info.FileName = r.getString(2);
+		info.FileSize = r.getInt(3);
+		info.CompleteSize = r.getInt(4);
+		info.Status = r.getInt(5);
 		int id = r.getInt(0);
 		r.close();
 		return id;
