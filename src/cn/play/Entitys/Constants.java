@@ -13,6 +13,12 @@ public class Constants {
 	public static String PreviewCache = AppBaseDir + "Cache/Preview/";
 	public static String DownloadDir = AppBaseDir + "Download/";
 
+	public static int DownloadStatus_Prepare = 0;
+	public static int DownloadStatus_Downloading = 1;
+	public static int DownloadStatus_Pause = 2;
+	public static int DownloadStatus_Cancel = 4;
+	public static int DownloadStatus_Complete = 10;
+
 	// ·µ»ØSD¿¨Ä¿Â¼¡£
 	public static String GetSDCardPath() {
 		if (Environment.getExternalStorageState().equals(

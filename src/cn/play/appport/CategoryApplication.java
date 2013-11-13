@@ -11,7 +11,9 @@ import org.json.JSONObject;
 
 import cn.play.Entitys.Constants;
 import cn.play.Entitys.Entitys;
+import cn.play.Entitys.Entitys.BaseDownloadInfo;
 import cn.play.Entitys.Entitys.ListDataProfile;
+import cn.play.Service.DownloadService;
 import cn.play.Util.ImageSDCardCache;
 import cn.play.Util.NetUtil;
 import android.app.Activity;
@@ -24,12 +26,14 @@ import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -93,7 +97,7 @@ public class CategoryApplication extends Activity {
 			try {
 				ReturnData = NetUtil.GetHttpData(BaseUrl + "&page=" + PageId);
 				// ReturnData =
-				// "{TypeId:1,CategoryId:1,PageSize:100,TotalDataCount:1000,TotalPageCount:10,ListData:[{Id:1,Icon:\"http://img4.anzhi.com/data1/icon_tmp/201310/11/cn.goapk.market_90563400_72.png\",AppName:\"°²ÖÇÊĞ³¡(Í¨ÓÃ°æ)\",Star:5,Size:\"123K\",Download:\"321Íò\"},{Id:2,Icon:\"http://img4.anzhi.com/icon/201309/13/com.ijinshan.kbatterydoctor_91467500_0.png\",AppName:\"½ğÉ½µç³ØÒ½Éú\",Star:5,Size:\"123K\",Download:\"322Íò\"},{Id:3,Icon:\"http://img4.anzhi.com/data1/icon/201310/15/cn.opda.a.phonoalbumshoushou_34738100.jpg\",AppName:\"°²×¿ÓÅ»¯´óÊ¦\",Star:5,Size:\"123K\",Download:\"323Íò\"},{Id:4,Icon:\"http://img4.anzhi.com/data1/icon/201309/29/com.estrongs.android.pop_65375100.jpg\",AppName:\"ESÎÄ¼şä¯ÀÀÆ÷\",Star:5,Size:\"123K\",Download:\"324Íò\"},{Id:5,Icon:\"http://img4.anzhi.com/icon/201210/23/cn.etouch.ecalendar_98991000_0.png\",AppName:\"ÖĞ»ªÍòÄêÀú-ÈÕÀúÌìÆø\",Star:5,Size:\"123K\",Download:\"325Íò\"},{Id:6,Icon:\"http://img4.anzhi.com/data1/icon/201310/11/com.snda.wifilocating_18763000.jpg\",AppName:\"WiFiÔ¿³×\",Star:5,Size:\"123K\",Download:\"326Íò\"},{Id:7,Icon:\"http://img4.anzhi.com/data1/icon/201310/14/com.tencent.qqpim_99573900.jpg\",AppName:\"QQÍ¬²½ÖúÊÖ\",Star:5,Size:\"123K\",Download:\"327Íò\"},{Id:8,Icon:\"http://img4.anzhi.com/icon/201307/23/com.blovestorm_97426700_0.png\",AppName:\"À´µçÍ¨\",Star:5,Size:\"123K\",Download:\"328Íò\"},{Id:9,Icon:\"http://img4.anzhi.com/icon/201303/21/com.tencent.qqphonebook_44803200_0.png\",AppName:\"QQÍ¨Ñ¶Â¼\",Star:5,Size:\"123K\",Download:\"329Íò\"},{Id:10,Icon:\"http://img4.anzhi.com/icon/201207/20/com.yybackup_41263100_0.png\",AppName:\"yy±¸·İ\",Star:5,Size:\"123K\",Download:\"330Íò\"},{Id:11,Icon:\"http://img4.anzhi.com/icon/201212/12/com.azyx_66959200_0.png\",AppName:\"°²×¿ÓÎÏ·\",Star:5,Size:\"123K\",Download:\"331Íò\"},{Id:12,Icon:\"http://img4.anzhi.com/icon/201305/02/com.dataviz.docstogo_26130700_0.png\",AppName:\"°ì¹«ÀûÆ÷\",Star:5,Size:\"123K\",Download:\"332Íò\"},{Id:13,Icon:\"http://img5.anzhi.com/data1/icon/201309/10/com.dianxinos.powermanager_33245500.jpg\",AppName:\"µãĞÄÊ¡µç\",Star:5,Size:\"123K\",Download:\"333Íò\"},{Id:14,Icon:\"http://img5.anzhi.com/icon/201211/02/com.yxlk.taskmanager_18055200_0.png\",AppName:\"Ê¡µçÈÎÎñ¹ÜÀíÆ÷\",Star:5,Size:\"123K\",Download:\"334Íò\"},{Id:15,Icon:\"http://img5.anzhi.com/icon/201301/31/com.lextel.ALovePhone_82710600_0.png\",AppName:\"XDAÖúÊÖ\",Star:5,Size:\"123K\",Download:\"335Íò\"},{Id:16,Icon:\"http://img5.anzhi.com/icon/201310/22/com.antutu.ABenchMark_09632000_0.png\",AppName:\"°²ÍÃÍÃÆÀ²â\",Star:5,Size:\"123K\",Download:\"336Íò\"},{Id:17,Icon:\"http://img5.anzhi.com/icon/201305/03/com.aspire.g3wlan.client_61177100_0.png\",AppName:\"ÒÆ¶¯WiFiÍ¨\",Star:5,Size:\"123K\",Download:\"337Íò\"},{Id:18,Icon:\"http://img5.anzhi.com/data1/icon/201310/21/net.hidroid.hiapn.cn_49326400.jpg\",AppName:\"HiAPN Global\",Star:5,Size:\"123K\",Download:\"338Íò\"},{Id:19,Icon:\"http://img5.anzhi.com/icon/201301/18/com.zhimahu_10014300_0.png\",AppName:\"Ê¡µç±¦\",Star:5,Size:\"123K\",Download:\"339Íò\"},{Id:20,Icon:\"http://img5.anzhi.com/icon/201203/15/com.danesh.system.app.remover_51203700_0.png\",AppName:\"ÏµÍ³³ÌĞòĞ¶ÔØÆ÷\",Star:5,Size:\"123K\",Download:\"340Íò\"}]}";
+				// "{TypeId:1,CategoryId:1,PageSize:100,TotalDataCount:1000,TotalPageCount:10,ListData:[{Id:1,Icon:\"http://img4.anzhi.com/data1/icon_tmp/201310/11/cn.goapk.market_90563400_72.png\",AppName:\"ï¿½ï¿½ï¿½ï¿½ï¿½Ğ³ï¿½(Í¨ï¿½Ã°ï¿½)\",Star:5,Size:\"123K\",Download:\"321ï¿½ï¿½\"},{Id:2,Icon:\"http://img4.anzhi.com/icon/201309/13/com.ijinshan.kbatterydoctor_91467500_0.png\",AppName:\"ï¿½ï¿½É½ï¿½ï¿½ï¿½Ò½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"322ï¿½ï¿½\"},{Id:3,Icon:\"http://img4.anzhi.com/data1/icon/201310/15/cn.opda.a.phonoalbumshoushou_34738100.jpg\",AppName:\"ï¿½ï¿½×¿ï¿½Å»ï¿½ï¿½ï¿½Ê¦\",Star:5,Size:\"123K\",Download:\"323ï¿½ï¿½\"},{Id:4,Icon:\"http://img4.anzhi.com/data1/icon/201309/29/com.estrongs.android.pop_65375100.jpg\",AppName:\"ESï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"324ï¿½ï¿½\"},{Id:5,Icon:\"http://img4.anzhi.com/icon/201210/23/cn.etouch.ecalendar_98991000_0.png\",AppName:\"ï¿½Ğ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"325ï¿½ï¿½\"},{Id:6,Icon:\"http://img4.anzhi.com/data1/icon/201310/11/com.snda.wifilocating_18763000.jpg\",AppName:\"WiFiÔ¿ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"326ï¿½ï¿½\"},{Id:7,Icon:\"http://img4.anzhi.com/data1/icon/201310/14/com.tencent.qqpim_99573900.jpg\",AppName:\"QQÍ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"327ï¿½ï¿½\"},{Id:8,Icon:\"http://img4.anzhi.com/icon/201307/23/com.blovestorm_97426700_0.png\",AppName:\"ï¿½ï¿½ï¿½ï¿½Í¨\",Star:5,Size:\"123K\",Download:\"328ï¿½ï¿½\"},{Id:9,Icon:\"http://img4.anzhi.com/icon/201303/21/com.tencent.qqphonebook_44803200_0.png\",AppName:\"QQÍ¨Ñ¶Â¼\",Star:5,Size:\"123K\",Download:\"329ï¿½ï¿½\"},{Id:10,Icon:\"http://img4.anzhi.com/icon/201207/20/com.yybackup_41263100_0.png\",AppName:\"yyï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"330ï¿½ï¿½\"},{Id:11,Icon:\"http://img4.anzhi.com/icon/201212/12/com.azyx_66959200_0.png\",AppName:\"ï¿½ï¿½×¿ï¿½ï¿½Ï·\",Star:5,Size:\"123K\",Download:\"331ï¿½ï¿½\"},{Id:12,Icon:\"http://img4.anzhi.com/icon/201305/02/com.dataviz.docstogo_26130700_0.png\",AppName:\"ï¿½ì¹«ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"332ï¿½ï¿½\"},{Id:13,Icon:\"http://img5.anzhi.com/data1/icon/201309/10/com.dianxinos.powermanager_33245500.jpg\",AppName:\"ï¿½ï¿½ï¿½ï¿½Ê¡ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"333ï¿½ï¿½\"},{Id:14,Icon:\"http://img5.anzhi.com/icon/201211/02/com.yxlk.taskmanager_18055200_0.png\",AppName:\"Ê¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"334ï¿½ï¿½\"},{Id:15,Icon:\"http://img5.anzhi.com/icon/201301/31/com.lextel.ALovePhone_82710600_0.png\",AppName:\"XDAï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"335ï¿½ï¿½\"},{Id:16,Icon:\"http://img5.anzhi.com/icon/201310/22/com.antutu.ABenchMark_09632000_0.png\",AppName:\"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"336ï¿½ï¿½\"},{Id:17,Icon:\"http://img5.anzhi.com/icon/201305/03/com.aspire.g3wlan.client_61177100_0.png\",AppName:\"ï¿½Æ¶ï¿½WiFiÍ¨\",Star:5,Size:\"123K\",Download:\"337ï¿½ï¿½\"},{Id:18,Icon:\"http://img5.anzhi.com/data1/icon/201310/21/net.hidroid.hiapn.cn_49326400.jpg\",AppName:\"HiAPN Global\",Star:5,Size:\"123K\",Download:\"338ï¿½ï¿½\"},{Id:19,Icon:\"http://img5.anzhi.com/icon/201301/18/com.zhimahu_10014300_0.png\",AppName:\"Ê¡ï¿½ç±¦\",Star:5,Size:\"123K\",Download:\"339ï¿½ï¿½\"},{Id:20,Icon:\"http://img5.anzhi.com/icon/201203/15/com.danesh.system.app.remover_51203700_0.png\",AppName:\"ÏµÍ³ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½\",Star:5,Size:\"123K\",Download:\"340ï¿½ï¿½\"}]}";
 				if ("".equals(ReturnData)) {
 					throw new Exception("return data is null");
 				}
@@ -113,7 +117,8 @@ public class CategoryApplication extends Activity {
 								tempObject.getString("Icon"), tempObject
 										.getInt("Star"), tempObject
 										.getString("Size"), tempObject
-										.getString("Download")));
+										.getString("Download"), tempObject
+										.getString("Url")));
 					}
 				}
 				return "";
@@ -157,6 +162,7 @@ public class CategoryApplication extends Activity {
 	private static class ViewHolder {
 		public ImageView iconImageView;
 		public TextView appNameTextView, sizeTextView;
+		public Button downloadButton;
 	}
 
 	private class ListDataAdapter extends BaseAdapter {
@@ -197,6 +203,8 @@ public class CategoryApplication extends Activity {
 						.findViewById(R.id.itemlist_appname);
 				viewHolder.sizeTextView = (TextView) convertView
 						.findViewById(R.id.itemlist_size_download);
+				viewHolder.downloadButton = (Button) convertView
+						.findViewById(R.id.itemlist_btn_download);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -206,6 +214,24 @@ public class CategoryApplication extends Activity {
 			viewHolder.sizeTextView
 					.setText(listDataProfiles.get(position).AppSize + "|"
 							+ listDataProfiles.get(position).AppDownload);
+			BaseDownloadInfo baseInfo = new BaseDownloadInfo(
+					"http://www.apk.anzhi.com/data1/apk/201311/11/com.sina.weibo_17811900.apk",
+					listDataProfiles.get(position).AppName);
+			baseInfo.Id = listDataProfiles.get(position).Id;
+			viewHolder.downloadButton.setTag(baseInfo);
+			viewHolder.downloadButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Log.d(Constants.DebugTag, "button onclick");
+					BaseDownloadInfo info = (BaseDownloadInfo) v.getTag();
+					Intent intent = new Intent(thisActivity,
+							DownloadService.class);
+					intent.putExtra("Url", info.Url);
+					intent.putExtra("FileName", info.FileName);
+					intent.putExtra("AppName", info.AppName);
+					startService(intent);
+				}
+			});
 
 			viewHolder.iconImageView
 					.setTag(listDataProfiles.get(position).Icon);
@@ -245,7 +271,7 @@ public class CategoryApplication extends Activity {
 		bitmap = imageSDCardCache.GetBitmapFromSDCard(imageUrl);
 		if (bitmap != null)
 			return bitmap;
-		// ÔÚ»º´æÓëSDÖĞ¾ùÃ»ÓĞÕÒµ½ÎÄ¼ş£¬´ÓÍøÉÏÏÂÔØ¡£
+		// åœ¨ç¼“å­˜ä¸SDä¸­å‡æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶ï¼Œä»ç½‘ä¸Šä¸‹è½½ã€‚
 		executorService.submit(new Runnable() {
 			final Handler imageHandler = new Handler() {
 				@Override

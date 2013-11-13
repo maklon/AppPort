@@ -1,9 +1,11 @@
 package cn.play.Util;
 
+import cn.play.Entitys.Constants;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class SQLiteDBHelper extends SQLiteOpenHelper {
 	private static String DB_NAME = "download.db";
@@ -16,6 +18,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Log.d(Constants.DebugTag, "create db");
 		db.execSQL("CREATE TABLE DownloadList (id integer PRIMARY KEY AUTOINCREMENT,"
 				+ "url varchar(200),filename varchar(100),filesize integer,completesize integer,status integer)");
 

@@ -2,12 +2,13 @@ package cn.play.Service;
 
 import cn.play.Entitys.Entitys.DownloadInfo;
 import cn.play.Util.DownloadManager;
+import cn.play.Entitys.Constants;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
-import android.provider.SyncStateContract.Constants;
+import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DownloadService extends Service {
 	DownloadManager downloadManager;
@@ -29,26 +30,40 @@ public class DownloadService extends Service {
 		thisService = this;
 	}
 
-	
-
 	@Override
 	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
+		Log.d(Constants.DebugTag, "Service onStart");
 		String Url = intent.getStringExtra("Url");
 		String FileName = intent.getStringExtra("FileName");
-		downloadInfo = new DownloadInfo(Url, FileName);
-		Id = 0;
+		String AppName = intent.getStringExtra("AppName");
+		downloadInfo = null;
 		try {
-			Id = downloadManager.GetDownloadInfo(Url);
-			if (Id == 0) {
-				downloadManager.AddnewDownloadInfo(downloadInfo);
+			// 检查下载文件是否在列队中。
+			downloadInfo = downloadManager.GetDownloadInfo(Url);
+			if (downloadInfo == null) {
+				downloadManager.AddnewDownloadInfo(Url, AppName, FileName);
+				downloadInfo = downloadManager.GetDownloadInfo(Url);
 			}
+			// 开启线程进行下载
+
 		} catch (Exception ex) {
-			Log.e(cn.play.Entitys.Constants.DebugTag, ex.getMessage());
-			Toast.makeText(thisService, ex.getMessage(), Toast.LENGTH_LONG)
-					.show();
-			return;
+			// Log.e(Constants.DebugTag, ex.getMessage());
+			// Toast.makeText(thisService, ex.getMessage(), Toast.LENGTH_LONG)
+			// .show();
+			ex.printStackTrace();
 		}
+
+		super.onStart(intent, startId);
 	}
+
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+		}
+
+	};
 
 }

@@ -1,7 +1,5 @@
 package cn.play.Entitys;
 
-import android.R.string;
-
 public class Entitys {
 	public static class ListDataProfile {
 		public int Id;
@@ -10,28 +8,48 @@ public class Entitys {
 		public int StarLevel;
 		public String AppSize;
 		public String AppDownload;
+		public String DownloadUrl;
 
 		public ListDataProfile(int id, String appName, String icon,
-				int starLevel, String size, String download) {
+				int starLevel, String size, String download, String downloadUrl) {
 			this.Id = id;
 			this.AppName = appName;
 			this.Icon = icon;
 			this.StarLevel = starLevel;
 			this.AppSize = size;
 			this.AppDownload = download;
+			this.DownloadUrl = downloadUrl;
 		}
-
 	}
-
-	public static class DownloadInfo {
+	
+	public static class BaseDownloadInfo {
 		public int Id;
 		public String Url;
 		public String FileName;
+		public String AppName;
+
+		public BaseDownloadInfo() {
+			this.Id = 0;
+			this.Url = "";
+			this.FileName = "";
+			this.AppName = "";
+		}
+
+		public BaseDownloadInfo(String url, String appName) {
+			this.Id = 0;
+			this.Url = url;
+			this.FileName = this.Url.substring(this.Url.lastIndexOf("/") + 1);
+			this.AppName = appName;
+		}
+	}
+
+	public static class DownloadInfo extends BaseDownloadInfo {
 		public int FileSize;
 		public int CompleteSize;
 		public int Status;
 
-		public DownloadInfo(){
+		public DownloadInfo() {
+			super();
 			this.Id = 0;
 			this.Url = "";
 			this.FileName = "";
@@ -39,14 +57,13 @@ public class Entitys {
 			this.CompleteSize = 0;
 			this.Status = 0;
 		}
-		
-		public DownloadInfo(String url, String fileName) {
-			this.Id = 0;
-			this.Url = url;
-			this.FileName = fileName;
+
+		public DownloadInfo(String url, String appName) {
+			super(url, appName);
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = 0;
 		}
 	}
+
 }

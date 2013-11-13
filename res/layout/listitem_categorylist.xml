@@ -33,7 +33,7 @@
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/itemlist_btn_download"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:focusable="false"
