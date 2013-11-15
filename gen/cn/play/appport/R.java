@@ -52,17 +52,19 @@ public final class R {
         public static final int ico_set=0x7f020012;
         public static final int ico_special=0x7f020013;
         public static final int item_normal_bg=0x7f020014;
-        public static final int pre1=0x7f020015;
-        public static final int pre2=0x7f020016;
-        public static final int pre3=0x7f020017;
-        public static final int pre4=0x7f020018;
-        public static final int pre5=0x7f020019;
-        public static final int pre6=0x7f02001a;
-        public static final int ratingbar_normal=0x7f02001b;
-        public static final int ratingbar_pressed=0x7f02001c;
-        public static final int toolbar_bg=0x7f02001d;
-        public static final int toolbar_bg_sel=0x7f02001e;
-        public static final int toolbar_tab_bg=0x7f02001f;
+        public static final int list_download_progress=0x7f020015;
+        public static final int pre1=0x7f020016;
+        public static final int pre2=0x7f020017;
+        public static final int pre3=0x7f020018;
+        public static final int pre4=0x7f020019;
+        public static final int pre5=0x7f02001a;
+        public static final int pre6=0x7f02001b;
+        public static final int progress_horizontal=0x7f02001c;
+        public static final int ratingbar_normal=0x7f02001d;
+        public static final int ratingbar_pressed=0x7f02001e;
+        public static final int toolbar_bg=0x7f02001f;
+        public static final int toolbar_bg_sel=0x7f020020;
+        public static final int toolbar_tab_bg=0x7f020021;
     }
     public static final class id {
         public static final int ImageView01=0x7f09000e;
@@ -96,10 +98,10 @@ public final class R {
         public static final int TextView03=0x7f090015;
         public static final int TextView04=0x7f090013;
         public static final int TextView05=0x7f090012;
-        public static final int action_settings=0x7f090043;
+        public static final int action_settings=0x7f090045;
         public static final int appListView=0x7f090034;
         public static final int btn_back=0x7f090008;
-        public static final int btn_loading_retry=0x7f090042;
+        public static final int btn_loading_retry=0x7f090044;
         public static final int category_viewpage=0x7f09003e;
         public static final int detail_appicon=0x7f09000a;
         public static final int detail_appname=0x7f090010;
@@ -110,6 +112,9 @@ public final class R {
         public static final int imageView2=0x7f09001d;
         public static final int itemlist_appname=0x7f090021;
         public static final int itemlist_btn_download=0x7f090040;
+        public static final int itemlist_download_info=0x7f090043;
+        public static final int itemlist_download_progress=0x7f090042;
+        public static final int itemlist_download_progress_indicator=0x7f09001e;
         public static final int itemlist_icon=0x7f09003f;
         public static final int itemlist_size_download=0x7f090041;
         public static final int loading_append=0x7f090037;
@@ -125,7 +130,6 @@ public final class R {
         public static final int tabSpecial=0x7f090004;
         public static final int tab_app=0x7f090038;
         public static final int tab_game=0x7f09003b;
-        public static final int textView1=0x7f09001e;
         public static final int textView2=0x7f09001f;
         public static final int textView3=0x7f090020;
         public static final int text_detail_category=0x7f090007;
@@ -142,9 +146,10 @@ public final class R {
         public static final int layout_category_main=0x7f030004;
         public static final int layout_home=0x7f030005;
         public static final int listitem_categorylist=0x7f030006;
-        public static final int loading_append=0x7f030007;
-        public static final int loading_exception=0x7f030008;
-        public static final int loading_indicator=0x7f030009;
+        public static final int listitem_categorylist_progress=0x7f030007;
+        public static final int loading_append=0x7f030008;
+        public static final int loading_exception=0x7f030009;
+        public static final int loading_indicator=0x7f03000a;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -170,6 +175,7 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        public static final int listitem_progressbar=0x7f070004;
         public static final int main_category_item_rb=0x7f070003;
         public static final int main_tab_rb=0x7f070002;
     }

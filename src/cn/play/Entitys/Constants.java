@@ -16,10 +16,13 @@ public class Constants {
 	public static int DownloadStatus_Prepare = 0;
 	public static int DownloadStatus_Downloading = 1;
 	public static int DownloadStatus_Pause = 2;
+	public static int DownloadStatus_Continue = 3;
 	public static int DownloadStatus_Cancel = 4;
 	public static int DownloadStatus_Complete = 10;
 
-	// ·µ»ØSD¿¨Ä¿Â¼¡£
+	public static String Receiver_UpdateUI = "UPDATEUI";
+
+	// è·å–SDå¡è·¯å¾„
 	public static String GetSDCardPath() {
 		if (Environment.getExternalStorageState().equals(
 				android.os.Environment.MEDIA_MOUNTED)) {

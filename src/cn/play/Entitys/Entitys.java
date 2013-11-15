@@ -9,6 +9,7 @@ public class Entitys {
 		public String AppSize;
 		public String AppDownload;
 		public String DownloadUrl;
+		public int DownloadProgress;
 
 		public ListDataProfile(int id, String appName, String icon,
 				int starLevel, String size, String download, String downloadUrl) {
@@ -19,11 +20,13 @@ public class Entitys {
 			this.AppSize = size;
 			this.AppDownload = download;
 			this.DownloadUrl = downloadUrl;
+			this.DownloadProgress = 0;
 		}
 	}
-	
+
 	public static class BaseDownloadInfo {
 		public int Id;
+		public int AppId;
 		public String Url;
 		public String FileName;
 		public String AppName;
@@ -35,8 +38,9 @@ public class Entitys {
 			this.AppName = "";
 		}
 
-		public BaseDownloadInfo(String url, String appName) {
+		public BaseDownloadInfo(int appId, String url, String appName) {
 			this.Id = 0;
+			this.AppId = appId;
 			this.Url = url;
 			this.FileName = this.Url.substring(this.Url.lastIndexOf("/") + 1);
 			this.AppName = appName;
@@ -58,8 +62,15 @@ public class Entitys {
 			this.Status = 0;
 		}
 
-		public DownloadInfo(String url, String appName) {
-			super(url, appName);
+		public DownloadInfo(BaseDownloadInfo baseInfo) {
+			super(baseInfo.AppId, baseInfo.Url, baseInfo.AppName);
+			this.FileSize = 0;
+			this.CompleteSize = 0;
+			this.Status = 0;
+		}
+
+		public DownloadInfo(int appId, String url, String appName) {
+			super(appId, url, appName);
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = 0;
