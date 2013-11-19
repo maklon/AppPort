@@ -59,6 +59,7 @@ public class CategoryApplication extends Activity {
 	private HashMap<String, SoftReference<Bitmap>> imageCache;
 	ListDataAdapter listDataAdapter;
 	private ExecutorService executorService = Executors.newFixedThreadPool(2);
+	private UpdateListUI myReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,9 @@ public class CategoryApplication extends Activity {
 		LoadItemCount = 0;
 		GetListData getListData = new GetListData();
 		getListData.execute(0);
+
+		myReceiver = new UpdateListUI();
+		myReceiver.registerAction(Constants.Receiver_UpdateUI);
 	}
 
 	private void InitViews() {
@@ -229,7 +233,7 @@ public class CategoryApplication extends Activity {
 			progressIndicator = listDataProfiles.get(position).DownloadProgress;
 			if (progressIndicator > 0) {
 				viewHolder.progressTextView.setText(progressIndicator + "%");
-				viewHolder.downloadProgressBar.incrementProgressBy(progressIndicator);
+				viewHolder.downloadProgressBar.setProgress(progressIndicator);
 			}
 			BaseDownloadInfo baseInfo = new BaseDownloadInfo(
 					listDataProfiles.get(position).Id,
@@ -237,18 +241,15 @@ public class CategoryApplication extends Activity {
 					listDataProfiles.get(position).AppName);
 			// http://www.apk.anzhi.com/data1/apk/201310/18/com.cleanmaster.mguard_cn_62290500.apk
 			// http://www.apk.anzhi.com/data1/apk/201311/11/com.sina.weibo_17811900.apk
-			baseInfo.Id = listDataProfiles.get(position).Id;
 			viewHolder.downloadButton.setTag(baseInfo);
+			if (listDataProfiles.get(position).DownloadProgress == 100)
+				viewHolder.downloadButton.setText("安装");
 			viewHolder.downloadButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Log.d(Constants.DebugTag, "button onclick");
 					Button b = (Button) v;
-					if (b.getText().equals("下载")) {
-						b.setText("暂停");
-					} else {
-						b.setText("下载");
-					}
+
 					BaseDownloadInfo info = (BaseDownloadInfo) v.getTag();
 					Intent intent = new Intent(thisActivity,
 							DownloadService.class);
@@ -256,6 +257,18 @@ public class CategoryApplication extends Activity {
 					intent.putExtra("Url", info.Url);
 					intent.putExtra("FileName", info.FileName);
 					intent.putExtra("AppName", info.AppName);
+					if (b.getText().equals("下载")) {
+						b.setText("暂停");
+						intent.putExtra("Command",
+								Constants.DownloadStatus_Pause);
+					} else if (b.getText().equals("安装")) {
+						Toast.makeText(thisActivity, "安装游戏", Toast.LENGTH_LONG)
+								.show();
+					} else {
+						b.setText("下载");
+						intent.putExtra("Command",
+								Constants.DownloadStatus_Continue);
+					}
 					startService(intent);
 				}
 			});

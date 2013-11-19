@@ -38,6 +38,7 @@ public class Downloader {
 
 	public class DownloadingThread extends Thread {
 		private DownloadInfo downloadInfo;
+		private int fileLength;
 
 		public DownloadingThread(DownloadInfo info) {
 			this.downloadInfo = info;
@@ -51,52 +52,86 @@ public class Downloader {
 			InputStream inputStream = null;
 			Constants.SDCardPath = Constants.GetSDCardPath();
 			try {
-				File file = new File(Constants.SDCardPath + "/"
-						+ Constants.DownloadDir, downloadInfo.FileName);
+				// 创建下载目录。
+				File downloadDir = new File(Constants.SDCardPath + "/"
+						+ Constants.DownloadDir);
+				if (!downloadDir.exists()) {
+					if (downloadDir.mkdirs()) {
+						System.out.println("mkdirs success.");
+					}
+				}
+
 				URL url = new URL(downloadInfo.Url);
-				Log.d(Constants.DebugTag, "download url is " + downloadInfo.Url);
 				httpURLConnection = (HttpURLConnection) url.openConnection();
 				httpURLConnection.setConnectTimeout(20000);
 				httpURLConnection.setReadTimeout(20000);
 				httpURLConnection.setRequestMethod("GET");
-				httpURLConnection.setRequestProperty("Range", "bytes="
-						+ downloadInfo.CompleteSize + "-");
+				if (downloadInfo.FileSize > 0) {
+					// 非首次下载
+					httpURLConnection.setRequestProperty("Range", "bytes="
+							+ downloadInfo.CompleteSize + "-");
+				}
 				Log.d(Constants.DebugTag, "connection response:"
 						+ httpURLConnection.getResponseCode());
 				if (httpURLConnection.getResponseCode() != 200
 						&& httpURLConnection.getResponseCode() != 206)
-					throw new Exception("not correct response");
-				randomAccessFile = new RandomAccessFile(file, "rwd");
-				randomAccessFile.seek(downloadInfo.CompleteSize);
+					throw new Exception("不能连接到服务端，请稍候再试。");
+				fileLength = httpURLConnection.getContentLength();
+				Log.d(Constants.DebugTag, "file length:" + fileLength);
+				if (fileLength == 0)
+					throw new Exception("未能获取到下载内容。请稍候再试。");
+				File file = new File(Constants.SDCardPath + "/"
+						+ Constants.DownloadDir, downloadInfo.FileName);
+				if (downloadInfo.FileSize == 0) {
+					// 文件大小为0，则认为是首次下载。需要创建文件。
+					downloadInfo.FileSize = fileLength;
+					downloadInfo.CompleteSize = 0;
+					Constants.SDCardPath = Constants.GetSDCardPath();
+
+					if (!downloadDir.exists()) {
+						if (downloadDir.mkdirs()) {
+							System.out.println("mkdirs success.");
+						}
+					}
+
+					randomAccessFile = new RandomAccessFile(file, "rwd");
+					randomAccessFile.setLength(fileLength);
+				} else {
+					randomAccessFile = new RandomAccessFile(file, "rwd");
+					randomAccessFile.seek(downloadInfo.CompleteSize);
+				}
+
 				inputStream = httpURLConnection.getInputStream();
 				byte buffer[] = new byte[10240];
 				int length = 0;
 				DownloadStatus = Constants.DownloadStatus_Downloading;
 				while ((length = inputStream.read(buffer)) > 0) {
-					Log.d(Constants.DebugTag, "read length:" + length);
 					randomAccessFile.write(buffer, 0, length);
 					downloadInfo.CompleteSize += length;
 					// 更新数据库中的下载信息
-					downloadManager.UpdateDownloadInfo(downloadInfo.Id,
+					downloadManager.UpdateDownloadInfo(downloadInfo.AppId,
 							downloadInfo.CompleteSize,
 							Constants.DownloadStatus_Downloading);
 					Message msgDownloading = Message.obtain();
 					msgDownloading.what = Constants.DownloadStatus_Downloading;
-					msgDownloading.arg1 = downloadInfo.Id;
+					msgDownloading.arg1 = downloadInfo.AppId;
 					msgDownloading.arg2 = (int) (downloadInfo.CompleteSize * 100 / downloadInfo.FileSize);
+
 					if (DownloadStatus == Constants.DownloadStatus_Pause) {
-						downloadManager.UpdateDownloadInfo(downloadInfo.Id,
+						downloadManager.UpdateDownloadInfo(downloadInfo.AppId,
 								Constants.DownloadStatus_Pause);
 						msgDownloading.what = Constants.DownloadStatus_Pause;
 						mHandler.sendMessage(msgDownloading);
 						return;
 					} else {
-						mHandler.sendMessage(msgDownloading);
+						if (msgDownloading.arg2 % 5 == 0) {
+							mHandler.sendMessage(msgDownloading);
+						}
 					}
 				}
 				Message msgComplete = Message.obtain();
 				msgComplete.what = Constants.DownloadStatus_Complete;
-				msgComplete.arg1 = downloadInfo.Id;
+				msgComplete.arg1 = downloadInfo.AppId;
 				mHandler.sendMessage(msgComplete);
 			} catch (Exception ex) {
 				System.out.println("threaid has exception");

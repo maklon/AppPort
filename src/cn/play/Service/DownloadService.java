@@ -48,17 +48,16 @@ public class DownloadService extends Service {
 		BaseDownloadInfo baseInfo = new BaseDownloadInfo(AppId, Url, AppName);
 		downloadInfo = null;
 
-		if (Command == Constants.DownloadStatus_Prepare) {
+		downloadInfo = downloadManager.GetDownloadInfo(AppId);
+		if (downloadInfo == null) {
 			downloadManager.AddnewDownloadInfo(baseInfo);
+			downloadInfo = new DownloadInfo(baseInfo);
 		}
-		downloadInfo = null;
+
 		try {
 			// 检查下载文件是否在数据库列队中。
-			downloadInfo = downloadManager.GetDownloadInfo(AppId);
 
-			if (downloadInfo == null) {
-				// 如果不存在，则强制命令为Prepare.
-				downloadManager.AddnewDownloadInfo(baseInfo);
+			if (downloadInfo.Status == Constants.DownloadStatus_Prepare) {
 				Downloader downloader = new Downloader(thisService,
 						serviceHandler, downloadInfo);
 				DownloaderList.put(downloadInfo.AppId, downloader);
@@ -71,9 +70,11 @@ public class DownloadService extends Service {
 					Log.d(Constants.DebugTag, "不存在指定的下载器，不能进行中断和续传操作。");
 					return;
 				}
-				if (downloadInfo.Status == Constants.DownloadStatus_Pause) {
+				if (Command==Constants.DownloadStatus_Continue) {
+					Log.d(Constants.DebugTag, "command:continue");
 					downloader.StartDownload();
-				}else{
+				} else {
+					Log.d(Constants.DebugTag, "command:pause");
 					downloader.PauseDownload();
 				}
 			}

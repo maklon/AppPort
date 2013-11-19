@@ -19,9 +19,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(Constants.DebugTag, "create db");
-		db.execSQL("CREATE TABLE DownloadList (Id integer PRIMARY KEY AUTOINCREMENT,AppId integer,"
+		db.execSQL("CREATE TABLE DownloadList (AppId int PRIMARY KEY,"
 				+ "Url varchar(255),FileName varchar(100),AppName varchar(127),"
-				+ "FileSize integer,CompleteSize integer,Status integer)");
+				+ "FileSize int,CompleteSize int,Status int)");
 
 	}
 

@@ -36,14 +36,15 @@ public class DownloadManager {
 		GetFileSize getFileSize = new GetFileSize();
 		getFileSize.execute(baseInfo.AppId + "", baseInfo.Url,
 				baseInfo.AppName, baseInfo.FileName);
-		
+
 	}
 
 	public class GetFileSize extends AsyncTask<String, Integer, String> {
+		int fileSize;
+		String appId, downloadUrl, appName, fileName;
+
 		@Override
 		protected String doInBackground(String... params) {
-			int fileSize;
-			String appId, downloadUrl, appName, fileName;
 			URL myUrl;
 			HttpURLConnection httpURLConnection = null;
 			RandomAccessFile randomFile;
@@ -84,15 +85,7 @@ public class DownloadManager {
 					randomFile.setLength(fileSize);// 设置保存文件的大小
 					randomFile.close();
 				}
-				ContentValues contentValues = new ContentValues();
-				contentValues.put("AppId", Integer.parseInt(appId));
-				contentValues.put("Url", downloadUrl);
-				contentValues.put("FileName", fileName);
-				contentValues.put("AppName", appName);
-				contentValues.put("FileSize", fileSize);
-				contentValues.put("CompleteSize", 0);
-				contentValues.put("Status", Constants.DownloadStatus_Prepare);
-				Db.insert("DownloadList", null, contentValues);
+
 				return "";
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -105,7 +98,19 @@ public class DownloadManager {
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (!"".equals(result)) {
+			if ("".equals(result)) {
+				ContentValues contentValues = new ContentValues();
+				contentValues.put("AppId", Integer.parseInt(appId));
+				contentValues.put("Url", downloadUrl);
+				contentValues.put("FileName", fileName);
+				contentValues.put("AppName", appName);
+				contentValues.put("FileSize", fileSize);
+				contentValues.put("CompleteSize", 0);
+				contentValues.put("Status", Constants.DownloadStatus_Prepare);
+				Db = DbHelper.getWritableDatabase();
+				Db.insert("DownloadList", null, contentValues);
+				Db.close();
+			} else {
 				Toast.makeText(thisContext, result, Toast.LENGTH_LONG).show();
 			}
 		}
@@ -113,41 +118,42 @@ public class DownloadManager {
 
 	public DownloadInfo GetDownloadInfo(int appId) {
 		Db = DbHelper.getWritableDatabase();
-		Cursor r = Db.rawQuery("SELECT * FROM DownloadList WHERE AppId=?",
-				new String[] { "" + appId });
+		Cursor r = Db.rawQuery("SELECT * FROM DownloadList WHERE AppId="
+				+ appId, null);
 		if (r.getCount() == 0)
 			return null;
 		r.moveToFirst();
 		DownloadInfo info = new DownloadInfo();
-		info.Id = r.getInt(0);
-		info.AppId = r.getInt(1);
-		info.Url = r.getString(2);
-		info.FileName = r.getString(3);
-		info.AppName = r.getString(4);
-		info.FileSize = r.getInt(5);
-		info.CompleteSize = r.getInt(6);
-		info.Status = r.getInt(7);
+		info.AppId = r.getInt(0);
+		info.Url = r.getString(1);
+		info.FileName = r.getString(2);
+		info.AppName = r.getString(3);
+		info.FileSize = r.getInt(4);
+		info.CompleteSize = r.getInt(5);
+		info.Status = r.getInt(6);
 		r.close();
 		Db.close();
 		return info;
 	}
 
-	public void UpdateDownloadInfo(int Id, int completeSize, int status) {
+	public void UpdateDownloadInfo(int appId, int completeSize, int status) {
 		Db = DbHelper.getWritableDatabase();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put("CompleteSize", completeSize);
-		contentValues.put("Status", status);
-		Db.update("DownloadList", contentValues, "Id=?",
-				new String[] { "" + Id });
+		Db.execSQL("UPDATE DownloadList SET CompleteSize=" + completeSize
+				+ ",Status=" + status + " WHERE AppId=" + appId);
 		Db.close();
 	}
-	
-	public void UpdateDownloadInfo(int Id, int status) {
+
+	public void UpdateFileSize(int appId, int fileSize) {
 		Db = DbHelper.getWritableDatabase();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put("Status", status);
-		Db.update("DownloadList", contentValues, "Id=?",
-				new String[] { "" + Id });
+		Db.execSQL("UPDATE DownloadList SET FileSize=" + fileSize
+				+ ",CompleteSize=0 WHERE AppId=" + appId);
+		Db.close();
+	}
+
+	public void UpdateDownloadInfo(int appId, int status) {
+		Db = DbHelper.getWritableDatabase();
+		Db.execSQL("UPDATE DownloadList SET Status=" + status + " WHERE AppId="
+				+ appId);
 		Db.close();
 	}
 

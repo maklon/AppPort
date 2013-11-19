@@ -25,21 +25,18 @@ public class Entitys {
 	}
 
 	public static class BaseDownloadInfo {
-		public int Id;
 		public int AppId;
 		public String Url;
 		public String FileName;
 		public String AppName;
 
 		public BaseDownloadInfo() {
-			this.Id = 0;
 			this.Url = "";
 			this.FileName = "";
 			this.AppName = "";
 		}
 
 		public BaseDownloadInfo(int appId, String url, String appName) {
-			this.Id = 0;
 			this.AppId = appId;
 			this.Url = url;
 			this.FileName = this.Url.substring(this.Url.lastIndexOf("/") + 1);
@@ -54,26 +51,25 @@ public class Entitys {
 
 		public DownloadInfo() {
 			super();
-			this.Id = 0;
 			this.Url = "";
 			this.FileName = "";
 			this.FileSize = 0;
 			this.CompleteSize = 0;
-			this.Status = 0;
+			this.Status = Constants.DownloadStatus_Prepare;
 		}
 
 		public DownloadInfo(BaseDownloadInfo baseInfo) {
 			super(baseInfo.AppId, baseInfo.Url, baseInfo.AppName);
 			this.FileSize = 0;
 			this.CompleteSize = 0;
-			this.Status = 0;
+			this.Status = Constants.DownloadStatus_Prepare;
 		}
 
 		public DownloadInfo(int appId, String url, String appName) {
 			super(appId, url, appName);
 			this.FileSize = 0;
 			this.CompleteSize = 0;
-			this.Status = 0;
+			this.Status = Constants.DownloadStatus_Prepare;
 		}
 	}
 
