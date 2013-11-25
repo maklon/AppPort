@@ -57,14 +57,17 @@ public class DownloadManager {
 			fileName = params[3];
 			try {
 				myUrl = new URL(downloadUrl);
+				
 				httpURLConnection = (HttpURLConnection) myUrl.openConnection();
 				httpURLConnection.setConnectTimeout(20000);
 				httpURLConnection.setReadTimeout(20000);
 				httpURLConnection.setRequestMethod("GET");
-
+				
 				if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK)
 					throw new Exception("not correct response");
+					
 				fileSize = httpURLConnection.getContentLength();
+				
 				if (fileSize <= 0) {
 					throw new Exception("未能获取到文件大小。");
 				}

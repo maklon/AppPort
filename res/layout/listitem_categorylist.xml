@@ -40,7 +40,7 @@
                 android:focusable="false"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="下 载"
+                android:text="下载"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -53,9 +53,16 @@
                 android:id="@+id/itemlist_size_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="TextView"
                 android:textColor="#999999"
                 android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/itemlist_text_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000" />
 
         </LinearLayout>
 

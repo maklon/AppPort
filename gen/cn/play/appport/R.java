@@ -98,10 +98,10 @@ public final class R {
         public static final int TextView03=0x7f090015;
         public static final int TextView04=0x7f090013;
         public static final int TextView05=0x7f090012;
-        public static final int action_settings=0x7f090045;
+        public static final int action_settings=0x7f090046;
         public static final int appListView=0x7f090034;
         public static final int btn_back=0x7f090008;
-        public static final int btn_loading_retry=0x7f090044;
+        public static final int btn_loading_retry=0x7f090045;
         public static final int category_viewpage=0x7f09003e;
         public static final int detail_appicon=0x7f09000a;
         public static final int detail_appname=0x7f090010;
@@ -112,11 +112,12 @@ public final class R {
         public static final int imageView2=0x7f09001d;
         public static final int itemlist_appname=0x7f090021;
         public static final int itemlist_btn_download=0x7f090040;
-        public static final int itemlist_download_info=0x7f090043;
-        public static final int itemlist_download_progress=0x7f090042;
+        public static final int itemlist_download_info=0x7f090044;
+        public static final int itemlist_download_progress=0x7f090043;
         public static final int itemlist_download_progress_indicator=0x7f09001e;
         public static final int itemlist_icon=0x7f09003f;
         public static final int itemlist_size_download=0x7f090041;
+        public static final int itemlist_text_progress=0x7f090042;
         public static final int loading_append=0x7f090037;
         public static final int loading_exception=0x7f090036;
         public static final int loading_indicator=0x7f090035;

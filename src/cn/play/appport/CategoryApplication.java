@@ -23,12 +23,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager.LayoutParams;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +55,7 @@ public class CategoryApplication extends Activity {
 	String BaseUrl, ReturnData;
 	ArrayList<Entitys.ListDataProfile> listDataProfiles;
 	private HashMap<String, SoftReference<Bitmap>> imageCache;
+	private HashMap<Integer, ProgressBar> progressBarList;
 	ListDataAdapter listDataAdapter;
 	private ExecutorService executorService = Executors.newFixedThreadPool(2);
 	private UpdateListUI myReceiver;
@@ -95,6 +94,7 @@ public class CategoryApplication extends Activity {
 	private void InitData() {
 		listDataProfiles = new ArrayList<Entitys.ListDataProfile>();
 		imageCache = new HashMap<String, SoftReference<Bitmap>>();
+		progressBarList = new HashMap<Integer, ProgressBar>();
 		BaseUrl = "http://180.96.63.71/as/List1?tid=1&cid=1";
 	}
 
@@ -170,7 +170,7 @@ public class CategoryApplication extends Activity {
 
 	private static class ViewHolder {
 		public ImageView iconImageView;
-		public TextView appNameTextView, sizeTextView, progressTextView;
+		public TextView appNameTextView, sizeTextView;
 		public Button downloadButton;
 		public ProgressBar downloadProgressBar;
 	}
@@ -204,9 +204,9 @@ public class CategoryApplication extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder viewHolder;
-			View listItemView = inflater.inflate(
-					R.layout.listitem_categorylist_progress, null);
 			if (convertView == null) {
+				View listItemView = inflater.inflate(
+						R.layout.listitem_categorylist_progress, null);
 				convertView = listItemView;
 				viewHolder = new ViewHolder();
 				viewHolder.iconImageView = (ImageView) convertView
@@ -217,13 +217,14 @@ public class CategoryApplication extends Activity {
 						.findViewById(R.id.itemlist_size_download);
 				viewHolder.downloadButton = (Button) convertView
 						.findViewById(R.id.itemlist_btn_download);
-				viewHolder.progressTextView = (TextView) convertView
-						.findViewById(R.id.itemlist_download_progress_indicator);
 				viewHolder.downloadProgressBar = (ProgressBar) convertView
 						.findViewById(R.id.itemlist_download_progress);
+				progressBarList.put(listDataProfiles.get(position).Id,
+						viewHolder.downloadProgressBar);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
+				viewHolder.downloadProgressBar = new ProgressBar(thisActivity);
 			}
 			viewHolder.appNameTextView
 					.setText(listDataProfiles.get(position).AppName);
@@ -231,10 +232,14 @@ public class CategoryApplication extends Activity {
 					.setText(listDataProfiles.get(position).AppSize + "|"
 							+ listDataProfiles.get(position).AppDownload);
 			progressIndicator = listDataProfiles.get(position).DownloadProgress;
-			if (progressIndicator > 0) {
-				viewHolder.progressTextView.setText(progressIndicator + "%");
-				viewHolder.downloadProgressBar.setProgress(progressIndicator);
-			}
+			Log.d(Constants.DebugTag, "listdataProfiles:" + position + ","
+					+ listDataProfiles.get(position).Id + ","
+					+ progressIndicator + ","
+					+ listDataProfiles.get(position).AppName);
+			// if (progressIndicator > 0) {
+			// viewHolder.progressTextView.setText(progressIndicator + "%");
+			// // viewHolder.downloadProgressBar.setProgress(progressIndicator);
+			// }
 			BaseDownloadInfo baseInfo = new BaseDownloadInfo(
 					listDataProfiles.get(position).Id,
 					"http://www.apk.anzhi.com/data1/apk/201310/18/com.cleanmaster.mguard_cn_62290500.apk",
@@ -249,7 +254,6 @@ public class CategoryApplication extends Activity {
 				public void onClick(View v) {
 					Log.d(Constants.DebugTag, "button onclick");
 					Button b = (Button) v;
-
 					BaseDownloadInfo info = (BaseDownloadInfo) v.getTag();
 					Intent intent = new Intent(thisActivity,
 							DownloadService.class);
@@ -393,13 +397,13 @@ public class CategoryApplication extends Activity {
 				int AppId = intent.getIntExtra("AppId", 0);
 				int CompleteProgress = intent
 						.getIntExtra("CompleteProgress", 0);
-				if (listDataProfiles.size() == 0 || AppId == 0)
-					return;
+				// ProgressBar pb = progressBarList.get(AppId);
+				// if (pb != null) {
+				// pb.setProgress(CompleteProgress);
+				// }
 				for (int i = 0; i < listDataProfiles.size(); i++) {
 					if (listDataProfiles.get(i).Id == AppId) {
-						listDataProfiles.get(i).DownloadProgress = CompleteProgress;
-						listDataAdapter.notifyDataSetChanged();
-						return;
+
 					}
 				}
 			}
