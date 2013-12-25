@@ -6,9 +6,11 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import cn.play.Entitys.Constants;
 import cn.play.Entitys.Entitys.DownloadInfo;
+import cn.play.Entitys.Entitys.DownloadThread;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +22,7 @@ public class Downloader {
 	public int DownloadStatus;
 	private DownloadManager downloadManager;
 	private DownloadInfo downloadInfo;
+	private ArrayList<DownloadThread> downloadThreadList;
 
 	public Downloader(Context context, Handler handler, DownloadInfo info) {
 		thisContext = context;
@@ -33,7 +36,7 @@ public class Downloader {
 	}
 
 	public void PauseDownload() {
-		DownloadStatus = Constants.DownloadStatus_Pause;
+		DownloadStatus = Constants.DownloadStatus_Paused;
 	}
 
 	public class DownloadingThread extends Thread {
@@ -117,10 +120,10 @@ public class Downloader {
 					msgDownloading.arg1 = downloadInfo.AppId;
 					msgDownloading.arg2 = (int) (downloadInfo.CompleteSize * 100 / downloadInfo.FileSize);
 
-					if (DownloadStatus == Constants.DownloadStatus_Pause) {
+					if (DownloadStatus == Constants.DownloadStatus_Paused) {
 						downloadManager.UpdateDownloadInfo(downloadInfo.AppId,
-								Constants.DownloadStatus_Pause);
-						msgDownloading.what = Constants.DownloadStatus_Pause;
+								Constants.DownloadStatus_Paused);
+						msgDownloading.what = Constants.DownloadStatus_Paused;
 						mHandler.sendMessage(msgDownloading);
 						return;
 					} else {
@@ -130,7 +133,7 @@ public class Downloader {
 					}
 				}
 				Message msgComplete = Message.obtain();
-				msgComplete.what = Constants.DownloadStatus_Complete;
+				msgComplete.what = Constants.DownloadStatus_Completed;
 				msgComplete.arg1 = downloadInfo.AppId;
 				mHandler.sendMessage(msgComplete);
 			} catch (Exception ex) {

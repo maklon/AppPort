@@ -22,6 +22,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE DownloadList (AppId int PRIMARY KEY,"
 				+ "Url varchar(255),FileName varchar(100),AppName varchar(127),"
 				+ "FileSize int,CompleteSize int,Status int)");
+		db.execSQL("CREATE TABLE DownloadThreadList (Id int PRIMARY KEY AUTOINCREMENT,AppId int"
+				+ ",DownloadSize int,StartPos int,EndPos int,Status int");
 
 	}
 

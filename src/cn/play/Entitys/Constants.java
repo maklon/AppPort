@@ -15,10 +15,10 @@ public class Constants {
 
 	public static int DownloadStatus_Prepare = 0;
 	public static int DownloadStatus_Downloading = 1;
-	public static int DownloadStatus_Pause = 2;
+	public static int DownloadStatus_Paused = 2;
 	public static int DownloadStatus_Continue = 3;
-	public static int DownloadStatus_Cancel = 4;
-	public static int DownloadStatus_Complete = 10;
+	public static int DownloadStatus_Canceled = 4;
+	public static int DownloadStatus_Completed = 10;
 
 	public static String Receiver_UpdateUI = "UPDATEUI";
 

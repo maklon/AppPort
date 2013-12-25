@@ -264,7 +264,7 @@ public class CategoryApplication extends Activity {
 					if (b.getText().equals("下载")) {
 						b.setText("暂停");
 						intent.putExtra("Command",
-								Constants.DownloadStatus_Pause);
+								Constants.DownloadStatus_Paused);
 					} else if (b.getText().equals("安装")) {
 						Toast.makeText(thisActivity, "安装游戏", Toast.LENGTH_LONG)
 								.show();

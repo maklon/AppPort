@@ -98,13 +98,13 @@ public class DownloadService extends Service {
 				intent.putExtra("AppId", msg.arg1);
 				intent.putExtra("CompleteProgress", msg.arg2);
 				thisService.sendBroadcast(intent);
-			} else if (msg.what == Constants.DownloadStatus_Complete) {
+			} else if (msg.what == Constants.DownloadStatus_Completed) {
 				Intent intent = new Intent();
 				intent.setAction(Constants.Receiver_UpdateUI);
 				intent.putExtra("AppId", msg.arg1);
 				intent.putExtra("CompleteProgress", 100);
 				downloadManager.UpdateDownloadInfo(msg.arg1,
-						Constants.DownloadStatus_Complete);
+						Constants.DownloadStatus_Completed);
 				thisService.sendBroadcast(intent);
 			}
 		}

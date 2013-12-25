@@ -1,5 +1,7 @@
 package cn.play.Entitys;
 
+import java.util.ArrayList;
+
 public class Entitys {
 	public static class ListDataProfile {
 		public int Id;
@@ -48,6 +50,7 @@ public class Entitys {
 		public int FileSize;
 		public int CompleteSize;
 		public int Status;
+		public ArrayList<DownloadThread> DownloadThreadList;
 
 		public DownloadInfo() {
 			super();
@@ -56,6 +59,7 @@ public class Entitys {
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = Constants.DownloadStatus_Prepare;
+			DownloadThreadList=new ArrayList<Entitys.DownloadThread>();
 		}
 
 		public DownloadInfo(BaseDownloadInfo baseInfo) {
@@ -63,6 +67,7 @@ public class Entitys {
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = Constants.DownloadStatus_Prepare;
+			DownloadThreadList=new ArrayList<Entitys.DownloadThread>();
 		}
 
 		public DownloadInfo(int appId, String url, String appName) {
@@ -70,6 +75,15 @@ public class Entitys {
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = Constants.DownloadStatus_Prepare;
+		}
+	}
+
+	public class DownloadThread {
+		public int AppId, DownloadSize, StartPos, EndPos, Status;
+
+		public DownloadThread(int appId, int downloadSize) {
+			this.AppId = appId;
+			this.DownloadSize = downloadSize;
 		}
 	}
 
