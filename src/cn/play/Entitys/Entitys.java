@@ -50,7 +50,6 @@ public class Entitys {
 		public int FileSize;
 		public int CompleteSize;
 		public int Status;
-		public ArrayList<DownloadThread> DownloadThreadList;
 
 		public DownloadInfo() {
 			super();
@@ -59,7 +58,6 @@ public class Entitys {
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = Constants.DownloadStatus_Prepare;
-			DownloadThreadList=new ArrayList<Entitys.DownloadThread>();
 		}
 
 		public DownloadInfo(BaseDownloadInfo baseInfo) {
@@ -67,7 +65,6 @@ public class Entitys {
 			this.FileSize = 0;
 			this.CompleteSize = 0;
 			this.Status = Constants.DownloadStatus_Prepare;
-			DownloadThreadList=new ArrayList<Entitys.DownloadThread>();
 		}
 
 		public DownloadInfo(int appId, String url, String appName) {
@@ -78,12 +75,32 @@ public class Entitys {
 		}
 	}
 
-	public class DownloadThread {
-		public int AppId, DownloadSize, StartPos, EndPos, Status;
+	public static class DownloadThread {
+		public int Id, AppId, DownloadSize, StartPos, EndPos, Status;
 
-		public DownloadThread(int appId, int downloadSize) {
+		public DownloadThread(int id, int appId, int downloadSize) {
+			this.Id = id;
 			this.AppId = appId;
 			this.DownloadSize = downloadSize;
+		}
+
+		public void setDownloadBlock(int startpos, int endpos) {
+			this.StartPos = startpos;
+			this.EndPos = endpos;
+			if (EndPos - StartPos < DownloadSize) {
+				DownloadSize = EndPos - StartPos;
+				EndPos = 0;
+			}
+		}
+
+		public void setDownloadBlock(int startpos) {
+			this.StartPos = startpos;
+			this.EndPos = 0;
+		}
+
+		public void appCompleteSize(int completeSize) {
+			this.DownloadSize += completeSize;
+			this.StartPos += completeSize;
 		}
 	}
 

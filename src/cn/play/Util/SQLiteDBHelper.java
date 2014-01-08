@@ -19,11 +19,11 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(Constants.DebugTag, "create db");
-		db.execSQL("CREATE TABLE DownloadList (AppId int PRIMARY KEY,"
+		db.execSQL("CREATE TABLE DownloadList (AppId integer PRIMARY KEY,"
 				+ "Url varchar(255),FileName varchar(100),AppName varchar(127),"
-				+ "FileSize int,CompleteSize int,Status int)");
-		db.execSQL("CREATE TABLE DownloadThreadList (Id int PRIMARY KEY AUTOINCREMENT,AppId int"
-				+ ",DownloadSize int,StartPos int,EndPos int,Status int");
+				+ "FileSize integer,CompleteSize integer,Status integer)");
+		db.execSQL("CREATE TABLE DownloadThreadList (Id integer PRIMARY KEY AUTOINCREMENT,AppId integer"
+				+ ",StartPos integer,EndPos integer,DownloadSize integer,CompleteSize integer)");
 
 	}
 
