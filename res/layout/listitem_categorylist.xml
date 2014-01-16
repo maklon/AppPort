@@ -38,8 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:focusable="false"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:text="下载"
                 android:textSize="12sp" />
 

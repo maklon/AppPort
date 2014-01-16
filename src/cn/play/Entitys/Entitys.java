@@ -1,6 +1,6 @@
 package cn.play.Entitys;
 
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Entitys {
 	public static class ListDataProfile {
@@ -12,6 +12,7 @@ public class Entitys {
 		public String AppDownload;
 		public String DownloadUrl;
 		public int DownloadProgress;
+		Random rnd=new Random();
 
 		public ListDataProfile(int id, String appName, String icon,
 				int starLevel, String size, String download, String downloadUrl) {
@@ -22,7 +23,8 @@ public class Entitys {
 			this.AppSize = size;
 			this.AppDownload = download;
 			this.DownloadUrl = downloadUrl;
-			this.DownloadProgress = 0;
+			//this.DownloadProgress = rnd.nextInt(100);
+			this.DownloadProgress=0;
 		}
 	}
 
@@ -76,12 +78,13 @@ public class Entitys {
 	}
 
 	public static class DownloadThread {
-		public int Id, AppId, DownloadSize, StartPos, EndPos, Status;
+		public int Id, AppId, DownloadSize, StartPos, EndPos,CompleteSize;
 
 		public DownloadThread(int id, int appId, int downloadSize) {
 			this.Id = id;
 			this.AppId = appId;
 			this.DownloadSize = downloadSize;
+			this.CompleteSize=0;
 		}
 
 		public void setDownloadBlock(int startpos, int endpos) {
@@ -99,8 +102,7 @@ public class Entitys {
 		}
 
 		public void appCompleteSize(int completeSize) {
-			this.DownloadSize += completeSize;
-			this.StartPos += completeSize;
+			this.CompleteSize+=completeSize;
 		}
 	}
 

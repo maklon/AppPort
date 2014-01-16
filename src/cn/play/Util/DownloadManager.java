@@ -62,8 +62,7 @@ public class DownloadManager {
 						+ startPos
 						+ ","
 						+ endPos
-						+ ","
-						+ downloadSize + ",0)");
+						+ "," + downloadSize + ",0)");
 			}
 			Log.d(Constants.DebugTag, "setTransactionSuccessful");
 			Db.setTransactionSuccessful();
@@ -179,16 +178,22 @@ public class DownloadManager {
 
 	public void addDownloadThread(DownloadThread downloadThread) {
 		Db = DbHelper.getWritableDatabase();
-		Db.execSQL("INSERT INTO DownloadThreadList (AppId,StartPos,EndPos,DownloadSize,CompleteSize) VALUES("
-				+ downloadThread.AppId
-				+ ","
-				+ downloadThread.StartPos
-				+ ","
-				+ downloadThread.EndPos
-				+ ","
-				+ downloadThread.DownloadSize
-				+ "," + "0)");
-		Db.close();
+		try {
+			Db.beginTransaction();
+			Db.execSQL("INSERT INTO DownloadThreadList (AppId,StartPos,EndPos,DownloadSize,CompleteSize) VALUES("
+					+ downloadThread.AppId
+					+ ","
+					+ downloadThread.StartPos
+					+ ","
+					+ downloadThread.EndPos
+					+ ","
+					+ downloadThread.DownloadSize + "," + "0)");
+			Db.endTransaction();
+		} catch (Exception ex) {
+			Log.e(Constants.DebugTag, ex.getMessage());
+		} finally {
+			Db.close();
+		}
 	}
 
 	public ArrayList<DownloadThread> getDownloadThreadList(int appId) {
@@ -196,14 +201,15 @@ public class DownloadManager {
 		Db = DbHelper.getWritableDatabase();
 		Cursor r = Db.rawQuery("SELECT * FROM DownloadThreadList WHERE AppId="
 				+ appId, null);
-		Log.d(Constants.DebugTag, "thread count:" + r.getCount());
 		for (int i = 0; i < r.getCount(); i++) {
+			if (i == 0)
+				r.moveToFirst();
 			DownloadThread dt = new DownloadThread(r.getInt(0), appId,
 					r.getInt(4));
 			dt.setDownloadBlock(r.getInt(2), r.getInt(3));
+			downloadThreads.add(dt);
 			if (!r.moveToNext())
 				break;
-			downloadThreads.add(dt);
 		}
 		r.close();
 		Db.close();
@@ -211,13 +217,23 @@ public class DownloadManager {
 	}
 
 	public void UpdateDownloadInfo(DownloadThread dt, int completeSize) {
-		Db = DbHelper.getWritableDatabase();
-		Db.execSQL("UPDATE DownloadList SET CompleteSize+=" + completeSize
-				+ ",Status=" + Constants.DownloadStatus_Downloading
-				+ " WHERE AppId=" + dt.AppId);
-		Db.execSQL("UPDATE DownloadThreadList SET StartPos=" + dt.StartPos
-				+ ",CompleteSize=" + dt.DownloadSize + " WHERE Id=" + dt.Id);
-		Db.close();
+		synchronized (this) {
+			Db = DbHelper.getWritableDatabase();
+			try {
+				//Db.beginTransaction();
+				Db.execSQL("UPDATE DownloadList SET CompleteSize=CompleteSize+"
+						+ completeSize + ",Status="
+						+ Constants.DownloadStatus_Downloading
+						+ " WHERE AppId=" + dt.AppId);
+				Db.execSQL("UPDATE DownloadThreadList SET CompleteSize=CompleteSize+"
+						+ completeSize + " WHERE Id=" + dt.Id);
+			} catch (Exception ex) {
+				Log.e(Constants.DebugTag, ex.getMessage());
+			} finally {
+				//Db.endTransaction();
+				Db.close();
+			}
+		}
 	}
 
 	public void UpdateFileSize(int appId, int fileSize) {

@@ -14,10 +14,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="10%"
+            android:text=""
             android:textColor="#803445e9"
             android:textSize="36sp"
-            android:visibility="invisible" />
+             />
 
     </LinearLayout>
 
