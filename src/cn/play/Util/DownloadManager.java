@@ -205,7 +205,7 @@ public class DownloadManager {
 			if (i == 0)
 				r.moveToFirst();
 			DownloadThread dt = new DownloadThread(r.getInt(0), appId,
-					r.getInt(4));
+					r.getInt(4),r.getInt(5));
 			dt.setDownloadBlock(r.getInt(2), r.getInt(3));
 			downloadThreads.add(dt);
 			if (!r.moveToNext())
@@ -220,7 +220,7 @@ public class DownloadManager {
 		synchronized (this) {
 			Db = DbHelper.getWritableDatabase();
 			try {
-				//Db.beginTransaction();
+				// Db.beginTransaction();
 				Db.execSQL("UPDATE DownloadList SET CompleteSize=CompleteSize+"
 						+ completeSize + ",Status="
 						+ Constants.DownloadStatus_Downloading
@@ -230,7 +230,7 @@ public class DownloadManager {
 			} catch (Exception ex) {
 				Log.e(Constants.DebugTag, ex.getMessage());
 			} finally {
-				//Db.endTransaction();
+				// Db.endTransaction();
 				Db.close();
 			}
 		}

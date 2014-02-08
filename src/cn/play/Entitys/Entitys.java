@@ -80,25 +80,16 @@ public class Entitys {
 	public static class DownloadThread {
 		public int Id, AppId, DownloadSize, StartPos, EndPos,CompleteSize;
 
-		public DownloadThread(int id, int appId, int downloadSize) {
+		public DownloadThread(int id, int appId, int downloadSize,int completeSize) {
 			this.Id = id;
 			this.AppId = appId;
 			this.DownloadSize = downloadSize;
-			this.CompleteSize=0;
+			this.CompleteSize=completeSize;
 		}
 
 		public void setDownloadBlock(int startpos, int endpos) {
 			this.StartPos = startpos;
 			this.EndPos = endpos;
-			if (EndPos - StartPos < DownloadSize) {
-				DownloadSize = EndPos - StartPos;
-				EndPos = 0;
-			}
-		}
-
-		public void setDownloadBlock(int startpos) {
-			this.StartPos = startpos;
-			this.EndPos = 0;
 		}
 
 		public void appCompleteSize(int completeSize) {

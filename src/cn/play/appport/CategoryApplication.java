@@ -222,7 +222,7 @@ public class CategoryApplication extends Activity {
 						.findViewById(R.id.itemlist_download_progress);
 				viewHolder.progressTextView = (TextView) convertView
 						.findViewById(R.id.itemlist_download_progress_indicator);
-				
+
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -233,16 +233,13 @@ public class CategoryApplication extends Activity {
 					.setText(listDataProfiles.get(position).AppSize + "|"
 							+ listDataProfiles.get(position).AppDownload);
 			progressIndicator = listDataProfiles.get(position).DownloadProgress;
-//			Log.d(Constants.DebugTag, "listdataProfiles:" + position + ","
-//					+ listDataProfiles.get(position).Id + ","
-//					+ progressIndicator + ","
-//					+ listDataProfiles.get(position).AppName);
-			if (progressIndicator > 0) {
-				viewHolder.progressTextView.setText(progressIndicator + "%");
-				viewHolder.downloadProgressBar.setProgress(progressIndicator);
-			}else{
+
+			if (progressIndicator == 0) {
 				viewHolder.progressTextView.setText("");
 				viewHolder.downloadProgressBar.setProgress(0);
+			} else {
+				viewHolder.progressTextView.setText(progressIndicator + "%");
+				viewHolder.downloadProgressBar.setProgress(progressIndicator);
 			}
 			BaseDownloadInfo baseInfo = new BaseDownloadInfo(
 					listDataProfiles.get(position).Id,
@@ -266,17 +263,25 @@ public class CategoryApplication extends Activity {
 					intent.putExtra("FileName", info.FileName);
 					intent.putExtra("AppName", info.AppName);
 					if (b.getText().equals("下载")) {
+						// 第一次开始下载游戏
 						b.setText("暂停");
 						intent.putExtra("Command",
-								Constants.DownloadStatus_Paused);
+								Constants.DownloadStatus_Prepare);
 					} else if (b.getText().equals("安装")) {
+						// 安装游戏
 						Toast.makeText(thisActivity, "安装游戏", Toast.LENGTH_LONG)
 								.show();
+					} else if (b.getText().equals("暂停")) {
+						// 暂停下载
+						b.setText("继续");
+						intent.putExtra("Command",
+								Constants.DownloadStatus_Paused);
 					} else {
-						
-						b.setText("下载");
+						// 继续下载
+						b.setText("暂停");
 						intent.putExtra("Command",
 								Constants.DownloadStatus_Continue);
+
 					}
 					startService(intent);
 				}
@@ -414,7 +419,7 @@ public class CategoryApplication extends Activity {
 						break;
 					}
 				}
-				
+
 				if (listPosition >= appListView.getFirstVisiblePosition()
 						&& listPosition <= appListView
 								.getFirstVisiblePosition()

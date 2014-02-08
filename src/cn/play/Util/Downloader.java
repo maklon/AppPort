@@ -63,6 +63,8 @@ public class Downloader {
 				DownloadThread downloadthread) {
 			this.downloadInfo = info;
 			this.downloadThread = downloadthread;
+			Log.d(Constants.DebugTag, downloadthread.Id + "_completeSize:"
+					+ downloadthread.CompleteSize);
 		}
 
 		@SuppressWarnings("resource")
@@ -79,21 +81,27 @@ public class Downloader {
 				httpURLConnection.setReadTimeout(20000);
 				httpURLConnection.setRequestMethod("GET");
 				httpURLConnection
-						.setRequestProperty("Range", "bytes="
-								+ downloadThread.StartPos + "-"
-								+ downloadThread.EndPos);
+						.setRequestProperty(
+								"Range",
+								"bytes="
+										+ (downloadThread.StartPos + downloadThread.CompleteSize)
+										+ "-" + downloadThread.EndPos);
+				Log.d(Constants.DebugTag,
+						downloadThread.Id
+								+ ":"
+								+ (downloadThread.StartPos + downloadThread.CompleteSize)
+								+ "-" + downloadThread.EndPos);
 				if (httpURLConnection.getResponseCode() != 200
 						&& httpURLConnection.getResponseCode() != 206)
 					throw new Exception("不能连接到服务端，请稍候再试。");
 				fileLength = httpURLConnection.getContentLength();
-				// Log.d(Constants.DebugTag, "file length:" + fileLength);
+				Log.d(Constants.DebugTag, downloadThread.Id + ":length_"
+						+ fileLength);
 				if (fileLength == 0)
 					throw new Exception("未能获取到下载内容。请稍候再试。");
 				File file = new File(Constants.SDCardPath + "/"
 						+ Constants.DownloadDir, downloadInfo.FileName);
 				randomAccessFile = new RandomAccessFile(file, "rwd");
-				// Log.d(Constants.DebugTag,
-				// "File Seek:"+downloadThread.StartPos);
 				randomAccessFile.seek(downloadThread.StartPos);
 
 				inputStream = httpURLConnection.getInputStream();
@@ -108,7 +116,6 @@ public class Downloader {
 					downloadManager.UpdateDownloadInfo(downloadThread, length);
 					// 更新UI线程
 					Message msgDownloading = Message.obtain();
-
 					msgDownloading.what = Constants.DownloadStatus_Downloading;
 					msgDownloading.arg1 = downloadInfo.AppId;
 					msgDownloading.arg2 = (int) (downloadInfo.CompleteSize * 100 / downloadInfo.FileSize);
@@ -119,17 +126,11 @@ public class Downloader {
 								Constants.DownloadStatus_Paused);
 						msgDownloading.what = Constants.DownloadStatus_Paused;
 						mHandler.sendMessage(msgDownloading);
-						Log.d(Constants.DebugTag, "Break Thread:"+downloadThread.Id);
+						Log.d(Constants.DebugTag, "Break Thread:"
+								+ downloadThread.Id);
 						return;
 					} else {
-//						Log.d(Constants.DebugTag, "Update UI:"
-//								+ msgDownloading.arg2);
 						mHandler.sendMessage(msgDownloading);
-//						if (msgDownloading.arg2 % 5 == 0) {
-//							Log.d(Constants.DebugTag, "Update UI:"
-//									+ msgDownloading.arg2);
-//							mHandler.sendMessage(msgDownloading);
-//						}
 					}
 				}
 				Message msgComplete = Message.obtain();

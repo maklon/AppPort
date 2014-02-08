@@ -66,41 +66,44 @@ public class DownloadService extends Service {
 			downloadInfo.FileSize = downloadManager
 					.GetDownloadFileSize(baseInfo);
 			downloadManager.AddnewDownloadInfo(downloadInfo);
-		}else{
-			downloadInfo.Status=Command;
+		} else {
+			if (Command == Constants.DownloadStatus_Prepare) {
+				downloadInfo.Status = Constants.DownloadStatus_Continue;
+			} else {
+				downloadInfo.Status = Command;
+			}
 		}
 
 		try {
 			// 检查下载文件是否在数据库列队中。
+			Downloader downloader = DownloaderList.get(AppId);
+			
 			if (downloadInfo.Status == Constants.DownloadStatus_Prepare) {
-				//Prepare状态表示该次下载为刚新建的下载，即首次下载。
-				Downloader downloader = new Downloader(thisService,
+				// Prepare状态表示该次下载为刚新建的下载，即首次下载。
+				if (downloader==null){
+				downloader = new Downloader(thisService,
 						serviceHandler, downloadInfo);
 				DownloaderList.put(downloadInfo.AppId, downloader);
-				Log.d(Constants.DebugTag, "首次下载。");
-				downloader.StartDownload();
-			} else {
-				//非Prepare状态即为非首次下载，即断点续传或中断继续
-				Log.d(Constants.DebugTag, "非首次下载。");
-				Downloader downloader = DownloaderList.get(AppId);
-				if (downloader == null) {
-					// 不在下载列表中，认定为断点续传，新建并下载
-					Downloader downloader1 = new Downloader(thisService,
-							serviceHandler, downloadInfo);
-					DownloaderList.put(downloadInfo.AppId, downloader1);
-					Log.d(Constants.DebugTag, "续传下载。");
-					downloader1.StartDownload();
-				}else{
-					//存在于下载列表，进行暂停和继续的操作。
-					if (Command == Constants.DownloadStatus_Continue) {
-						Log.d(Constants.DebugTag, "command:continue");
-						downloader.StartDownload();
-					} else {
-						Log.d(Constants.DebugTag, "command:pause");
-						downloader.PauseDownload();
-					}
 				}
+				Log.d(Constants.DebugTag, "完全首次下载，或重启应用后的首次下载");
+				downloader.StartDownload();
+			} else if (downloadInfo.Status==Constants.DownloadStatus_Paused){
+				//Paused收到下载暂停的通知
+				if (downloader!=null){
+					downloader.PauseDownload();
+				}
+			}else if (downloadInfo.Status==Constants.DownloadStatus_Continue){
+				// 非Prepare状态即为非首次下载，即断点续传或中断继续
+				Log.d(Constants.DebugTag, "继续下载。");
 				
+				if (downloader==null){
+					downloader = new Downloader(thisService,
+							serviceHandler, downloadInfo);
+					DownloaderList.put(downloadInfo.AppId, downloader);
+				}
+				downloader.StartDownload();
+			}else{
+				Log.d(Constants.DebugTag, "未知的指令");
 			}
 
 		} catch (Exception ex) {
